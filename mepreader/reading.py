@@ -47,6 +47,22 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False):
         if analog_deriv[i] > 1.0:
             trigger_indices.append(i)
 
+    # Gather post-trigger windows, print peak-to-peak, mean
+    trigger_window_timepoints = np.array([0.02, 0.05]) # seconds
+    #index offset from trigger
+    trigger_window_indices = trigger_window_timepoints*seg.analogsignals[0].sampling_rate 
+    trigger_index_minmax_dict = dict()
+    for trigger_index in trigger_indices:
+        window = seg.analogsignals[0][trigger_index+int(trigger_window_indices[0]):trigger_index+int(trigger_window_indices[1])]
+        window_start_index = trigger_index + int(trigger_window_indices[0])
+        window_stop_index = trigger_index + int(trigger_window_indices[1])
+        max_index = np.argmax(window)
+        min_index = np.argmin(window)
+        window_max = window[max_index]
+        window_min = window[min_index]
+        trigger_index_minmax_dict[trigger_index] = [window_start_index+min_index,window_start_index+max_index]
+        print("Trigger at {}s: max is {}, min is {}".format(timesteps[trigger_index],window_max, window_min))
+
     if plotSignal and HAS_MPL:
         fig = plt.figure()
         ax = fig.add_subplot(2,1,1)
@@ -55,12 +71,30 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False):
         plt.xlabel('time')
         plt.ylabel('voltage')
         for index in trigger_indices:
+            # Annotate trigger points
             ax.annotate('trigger', xy=(timesteps[index], seg.analogsignals[0][index]),  xycoords='data',
                     xytext=(-50, 30), textcoords='offset points',
                     bbox=dict(boxstyle="round", fc="0.8"),
                     arrowprops=dict(arrowstyle="->",
                                     connectionstyle="angle,angleA=0,angleB=90,rad=10"),
                     )
+            # Annotate min
+            min_after_trigger_index = trigger_index_minmax_dict[index][0]
+            ax.annotate('min', xy=(timesteps[min_after_trigger_index], seg.analogsignals[0][min_after_trigger_index]),  xycoords='data',
+                    xytext=(-50, 30), textcoords='offset points',
+                    bbox=dict(boxstyle="round", fc="0.8"),
+                    arrowprops=dict(arrowstyle="->",
+                                    connectionstyle="angle,angleA=0,angleB=90,rad=10"),
+                    )
+            # Annotate max
+            max_after_trigger_index = trigger_index_minmax_dict[index][1]
+            ax.annotate('max', xy=(timesteps[max_after_trigger_index], seg.analogsignals[0][max_after_trigger_index]),  xycoords='data',
+                    xytext=(-50, 30), textcoords='offset points',
+                    bbox=dict(boxstyle="round", fc="0.8"),
+                    arrowprops=dict(arrowstyle="->",
+                                    connectionstyle="angle,angleA=0,angleB=90,rad=10"),
+                    )
+
 
         bx = fig.add_subplot(2,1,2)
         bx.set_title("Channel Derivative")
@@ -69,4 +103,6 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False):
         plt.tight_layout()
         fig.canvas.draw()
         plt.show()
+
+    
 
