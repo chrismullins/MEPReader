@@ -20,20 +20,6 @@ class MEPReaderParser(argparse.ArgumentParser):
         self.print_help()
         sys.exit(2)
 
-    def is_valid_file(parser, arg):
-	    if not os.path.exists(arg):
-	        parser.error("The file %s does not exist!" % arg)
-	    else:
-	        return open(arg, 'r')  # return an open file handle
-
-    def extant_file(x):
-	    """
-	    'Type' for argparse - checks that file exists but does not open.
-	    """
-	    if not os.path.exists(x):
-	        raise argparse.ArgumentError("{0} does not exist".format(x))
-	    return x
-
 #---------------------------------------------------------------------------
 if __name__ == '__main__':
 
@@ -46,13 +32,12 @@ if __name__ == '__main__':
         action="count", default=0,
         help="increases log verbosity for each occurence.")
 
-    # parser.add_argument("--inputFile", dest="filename", required=True,
-    #                 help="input data file from spike2", metavar="FILE",
-    #                 type=lambda x: parser.is_valid_file(parser, x))
-    # parser.add_argument("-i", "--inputFile",
-    #     dest="filename", required=True, type=parser.extant_file,
-    #     help="input file with two matrices", metavar="FILE")
-    parser.add_argument("-i", "--inputFile", dest="filename", required=True, type=argparse.FileType('r'))
+    parser.add_argument('--plot',
+        dest='plotSignal', action='store_true', default=False,
+        help='Plot the signal. Requires matplotlib. (Helps to debug missed triggers)')
+
+    parser.add_argument("-i", "--inputFile", dest="filename",
+    	required=True, type=argparse.FileType('r'))
 
     arguments = parser.parse_args(sys.argv[1:])
 
@@ -60,4 +45,5 @@ if __name__ == '__main__':
         arguments.verbose_count = mr.VERBOSE
 
     mr.ReadAnalogData(inputFile=arguments.filename,
-    	              verbose=arguments.verbose_count)
+    	              verbose=arguments.verbose_count,
+    	              plotSignal=arguments.plotSignal)
