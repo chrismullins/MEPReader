@@ -36,6 +36,10 @@ if __name__ == '__main__':
         dest='plotSignal', action='store_true', default=False,
         help='Plot the signal. Requires matplotlib. (Helps to debug missed triggers)')
 
+    parser.add_argument('--plotDerivative',
+    	dest='plotDerivative', action='store_true', default=False,
+    	help='Plot the derivative under the EMG signal.  (Helps to debug missed triggers)')
+
     parser.add_argument("-i", "--inputFile", dest="filename",
     	required=True, type=argparse.FileType('r'))
 
@@ -46,4 +50,5 @@ if __name__ == '__main__':
 
     mr.ReadAnalogData(inputFile=arguments.filename,
     	              verbose=arguments.verbose_count,
+    	              plotDerivative=arguments.plotDerivative,
     	              plotSignal=arguments.plotSignal)
