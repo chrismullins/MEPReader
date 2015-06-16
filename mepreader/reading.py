@@ -108,7 +108,7 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
         window_max = window[max_index]
         window_min = window[min_index]
         trigger_index_minmax_dict[trigger_index] = [window_start_index+min_index,window_start_index+max_index]
-        print("Trigger at {}s: max is {}, min is {}".format(timesteps[trigger_index],window_max, window_min))
+        print("Trigger at {}s min/max/mean: {}, {}, {}".format(timesteps[trigger_index],window_max, window_min, np.mean(np.array([window_min, window_max]))))
 
     if plotSignal and HAS_MPL:
         plotSignals(emg_signal=seg.analogsignals[0], derivative=analog_deriv, timesteps=timesteps,
