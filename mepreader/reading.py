@@ -35,6 +35,13 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE):
     analog_deriv = np.diff(seg.analogsignals[0])
     analog_deriv = np.append(analog_deriv, [[0]])
 
+    trigger_indices = []
+    for i in range(0, len(analog_deriv)):
+        if analog_deriv[i] > 1.0:
+            trigger_indices.append(i)
+
+
+
 
     fig = plt.figure()
     ax = fig.add_subplot(2,1,1)
@@ -42,6 +49,14 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE):
     ax.plot(timesteps, seg.analogsignals[0])
     plt.xlabel('time')
     plt.ylabel('voltage')
+    for index in trigger_indices:
+        ax.annotate('trigger', xy=(timesteps[index], seg.analogsignals[0][index]),  xycoords='data',
+                xytext=(-50, 30), textcoords='offset points',
+                bbox=dict(boxstyle="round", fc="0.8"),
+                arrowprops=dict(arrowstyle="->",
+                                connectionstyle="angle,angleA=0,angleB=90,rad=10"),
+                )
+
 
     bx = fig.add_subplot(2,1,2)
     bx.set_title("Channel Derivative")
