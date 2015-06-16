@@ -1,4 +1,3 @@
-
 import numpy as np
 import neo as neo
 
@@ -17,8 +16,10 @@ VERBOSE = 1
 EXTRA_VERBOSE = 2
 INSANE_VERBOSE = 3
 
+#---------------------------------------------------------------------------
 def plotSignals(emg_signal=None, derivative=None, timesteps=None,
                     trigger_indices=None,trigger_index_minmax_dict=None,
+                    markWindow=False, windows=None,
                     plotDerivative=False):
     num_plots = 1
     if plotDerivative:
@@ -54,6 +55,11 @@ def plotSignals(emg_signal=None, derivative=None, timesteps=None,
                 arrowprops=dict(arrowstyle="->",
                                 connectionstyle="angle,angleA=0,angleB=90,rad=10"),
                 )
+
+    if markWindow:
+        for window in windows:
+            ax.axvspan(timesteps[window[0]], timesteps[window[1]], facecolor='g', alpha=0.5)
+
     if plotDerivative:
         bx = fig.add_subplot(num_plots,1,2)
         bx.set_title("Channel Derivative")
@@ -99,12 +105,14 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
     #index offset from trigger
     trigger_window_indices = trigger_window_timepoints*seg.analogsignals[0].sampling_rate 
     trigger_index_minmax_dict = dict()
+    window_indices = []
     for trigger_index in trigger_indices:
         window = seg.analogsignals[0][trigger_index+int(trigger_window_indices[0]):trigger_index+int(trigger_window_indices[1])]
         window_start_index = trigger_index + int(trigger_window_indices[0])
         window_stop_index = trigger_index + int(trigger_window_indices[1])
         max_index = np.argmax(window)
         min_index = np.argmin(window)
+        window_indices.append([window_start_index,window_stop_index])
         window_max = window[max_index]
         window_min = window[min_index]
         trigger_index_minmax_dict[trigger_index] = [window_start_index+min_index,window_start_index+max_index]
@@ -113,7 +121,7 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
     if plotSignal and HAS_MPL:
         plotSignals(emg_signal=seg.analogsignals[0], derivative=analog_deriv, timesteps=timesteps,
                     trigger_indices=trigger_indices,trigger_index_minmax_dict=trigger_index_minmax_dict,
-                    plotDerivative=plotDerivative)
+                    markWindow=True, windows=window_indices, plotDerivative=plotDerivative)
 
     
 
