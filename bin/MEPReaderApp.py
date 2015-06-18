@@ -43,6 +43,11 @@ if __name__ == '__main__':
     parser.add_argument("-i", "--inputFile", dest="filename",
     	required=True, type=argparse.FileType('r'))
 
+    parser.add_argument('-o', #metavar="output",
+        type=argparse.FileType('w'), default=sys.stdout,
+        dest='output_file',
+        help="redirect output to a file")
+
     arguments = parser.parse_args(sys.argv[1:])
 
     if arguments.verbose_count == 0:
@@ -50,5 +55,6 @@ if __name__ == '__main__':
 
     mr.ReadAnalogData(inputFile=arguments.filename,
     	              verbose=arguments.verbose_count,
+    	              outputPath=arguments.output_file,
     	              plotDerivative=arguments.plotDerivative,
     	              plotSignal=arguments.plotSignal)
