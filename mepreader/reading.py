@@ -1,5 +1,6 @@
 import numpy as np
 import neo as neo
+import os
 
 HAS_MPL = True
 try:
@@ -71,6 +72,7 @@ def plotSignals(emg_signal=None, derivative=None, timesteps=None,
 
 #---------------------------------------------------------------------------
 def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
+    outputPath=None,
     plotDerivative=False):
     reader = neo.io.Spike2IO(filename=inputFile.name)
     seg = reader.read_segment(lazy=False, cascade=True)
@@ -123,7 +125,14 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
                     trigger_indices=trigger_indices,trigger_index_minmax_dict=trigger_index_minmax_dict,
                     markWindow=True, windows=window_indices, plotDerivative=plotDerivative)
 
-    
-
-    
-
+    ecg_signal = seg.analogsignals[0]
+    trigger_timepoints = np.array([timesteps[trigger] for trigger in trigger_indices])
+    trigger_mins = np.array([ecg_signal[trigger_index_minmax_dict[trigger][0]] for trigger in trigger_indices])
+    trigger_maxs = np.array([ecg_signal[trigger_index_minmax_dict[trigger][1]] for trigger in trigger_indices])
+    trigger_means = (trigger_mins + trigger_maxs) / 2
+    trigger_p2p = abs(trigger_mins) + abs(trigger_maxs)
+    if outputPath:
+        np.savetxt(outputPath, \
+            np.hstack(arr.reshape(-1,1) for arr in \
+                [trigger_timepoints,trigger_mins,trigger_maxs,trigger_means, trigger_p2p]), \
+            header="trigger,min,max,mean,peak2peak", delimiter=",", fmt="%.5e")
