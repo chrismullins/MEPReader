@@ -40,6 +40,10 @@ if __name__ == '__main__':
     	dest='plotDerivative', action='store_true', default=False,
     	help='Plot the derivative under the EMG signal.  (Helps to debug missed triggers)')
 
+    parser.add_argument('--pairedPulse',
+    	dest='pairedPulse', action='store_true', default=False,
+    	help='These are paired pulse data.')
+
     parser.add_argument("-i", "--inputFile", dest="filename",
     	required=True, type=argparse.FileType('r'))
 
@@ -57,4 +61,5 @@ if __name__ == '__main__':
     	              verbose=arguments.verbose_count,
     	              outputPath=arguments.output_file,
     	              plotDerivative=arguments.plotDerivative,
-    	              plotSignal=arguments.plotSignal)
+    	              plotSignal=arguments.plotSignal,
+    	              pairedPulse=arguments.pairedPulse)

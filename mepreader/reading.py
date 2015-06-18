@@ -73,7 +73,8 @@ def plotSignals(emg_signal=None, derivative=None, timesteps=None,
 #---------------------------------------------------------------------------
 def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
     outputPath=None,
-    plotDerivative=False):
+    plotDerivative=False,
+    pairedPulse=False):
     reader = neo.io.Spike2IO(filename=inputFile.name)
     seg = reader.read_segment(lazy=False, cascade=True)
     if verbose >= VERBOSE:
@@ -98,12 +99,23 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
     # In the future this might be interactive, or make this
     # value configurable.
     trigger_indices = []
-    for i in range(0, len(analog_deriv)):
+    # Trigger waiting period: for paired pulse data there are two triggers within 30ms of eachother.
+    # Skip ahead the corresponding number of samples to avoid tagging both triggers. Non-pp data
+    # doesn't have close-together triggers so we can do this safely for both.
+    trigger_waiting_period = int(0.030*seg.analogsignals[0].sampling_rate)
+    #for i in range(0, len(analog_deriv)):
+    i=0
+    while i < len(analog_deriv):
         if analog_deriv[i] > 1.0:
             trigger_indices.append(i)
+            i += trigger_waiting_period
+        else:
+            i += 1
 
     # Gather post-trigger windows, print peak-to-peak, mean
     trigger_window_timepoints = np.array([0.02, 0.05]) # seconds
+    if pairedPulse:
+        trigger_window_timepoints[1] = 0.065
     #index offset from trigger
     trigger_window_indices = trigger_window_timepoints*seg.analogsignals[0].sampling_rate 
     trigger_index_minmax_dict = dict()
