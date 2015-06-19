@@ -92,3 +92,9 @@ The application takes one required argument (the `.smr` input file) and can be u
 python bin/MEPReaderApp.py -i C:/Data/ppTMS_Visit_1/004_CSP000.smr --plot
 ```
 will open a plot looking something like this:
+![alt tag](https://raw.githubusercontent.com/chrismullins/MEPReader/793a06a7ceaa556d2e4e34cc42e55259ee4dc262/Resources/images/test_ppTMS_1.png)
+
+Use the zoom-to-rectangle tool in the lower left-hand corner to isolate one trigger and the corresponding response.  If the script ran correctly, you should see something like this.  The green area indicates the window in which the script looks for a min and max response.  If any of the annotations for the trigger, min, or max responses are incorrect, open a bug report with the development team (walk over and tell me about it).
+![alt tag](https://raw.githubusercontent.com/chrismullins/MEPReader/793a06a7ceaa556d2e4e34cc42e55259ee4dc262/Resources/images/test_ppTMS_2.png)
+
+This provides a quick way to check whether the script is working incorrectly, or the data are just unusual.
