@@ -24,7 +24,14 @@ Many of these packages have been archived by Christopher Gohlke in order to be e
 | 2.7.x  | 32-bit  | numpy-1.9.2+mkl-cp27-none-win32.whl|
 |        | 64-bit  | numpy‑1.9.2+mkl‑cp27‑none‑win_amd64.whl|
 
+A wheel is a ZIP-format archive with a specially formatted filename and the .whl extension. More info on python wheels [here](https://pypi.python.org/pypi/wheel).  Once you download the correct wheel file, use pip in the terminal to install it:
+```bash
+pip install C:\Users\chris\Downloads\numpy‑1.9.2+mkl‑cp27‑none‑win_amd64.whl
+```
 
-* [NumPy](http://www.numpy.org/)
+* [NumPy](http://www.numpy.org/) for numerical computing
   * [Gohlke's NumPy+MKL packages](http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy)
-  * Alternatively, try the most recent supported version [available on the sourceforge page](http://sourceforge.net/projects/numpy/files/NumPy/1.9.2/).
+  * Alternatively, try the most recent supported version [ 1.9.2 available on the sourceforge page](http://sourceforge.net/projects/numpy/files/NumPy/1.9.2/) (not much advantage since Gohlke has archived 1.9.2).
+* [matplotlib](http://matplotlib.org/) for plotting
+  * [Gohlke's matplotlib packages](http://www.lfd.uci.edu/~gohlke/pythonlibs/#matplotlib)
+  * Alternatively, the most recent wheels are available on the [matplotlib download page](http://matplotlib.org/downloads.html) (once again the previous link already has 1.4.3 which is sufficient)
