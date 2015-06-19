@@ -40,6 +40,21 @@ pip install C:\Users\chris\Downloads\numpy‑1.9.2+mkl‑cp27‑none‑win_amd64
   * Alternatively, try the most recent supported version [ 1.9.2 available on the sourceforge page](http://sourceforge.net/projects/numpy/files/NumPy/1.9.2/) (not much advantage since Gohlke has archived 1.9.2).
 * [matplotlib](http://matplotlib.org/) for plotting
   * [Gohlke's matplotlib packages](http://www.lfd.uci.edu/~gohlke/pythonlibs/#matplotlib)
-  * Alternatively, the most recent wheels are available on the [matplotlib download page](http://matplotlib.org/downloads.html) (once again the previous link already has 1.4.3 which is sufficient)
+  * Alternatively, the most recent wheels are available on the [matplotlib download page](http://matplotlib.org/downloads.html) (once again the previous link already has 1.4.3 which is sufficient).
 * [neo](https://pythonhosted.org/neo/) for reading electrophysiology data in Python
-  * Run the command `pip install neo` in your terminal
+  * Run the command `pip install neo` in your terminal.
+ 
+=
+#### Mac OS X
+* [NumPy](http://www.numpy.org/) for numerical computing
+  * Run `sudo pip install numpy` in your terminal.
+* [matplotlib](http://matplotlib.org/) for plotting
+  * Run `sudo pip install matplotlib` in your terminal.
+* [neo](https://pythonhosted.org/neo/) for reading electrophysiology data in Python
+  * Run `sudo pip install neo` in your terminal.
+
+[ImportError: cannot import name _thread](http://stackoverflow.com/questions/27630114/matplotlib-issue-on-os-x-importerror-cannot-import-name-thread) -- Sometimes the matplotlib install fails on newer versions of OSX. The fix mentioned in the link is:
+```bash
+sudo pip uninstall python-dateutil
+sudo pip install python-dateutil==2.2
+```
