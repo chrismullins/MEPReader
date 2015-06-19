@@ -58,3 +58,37 @@ pip install C:\Users\chris\Downloads\numpy‑1.9.2+mkl‑cp27‑none‑win_amd64
 sudo pip uninstall python-dateutil
 sudo pip install python-dateutil==2.2
 ```
+
+### Download the MEPReader
+If you have [git](https://git-scm.com/) available in your command line or terminal, execute:
+```bash
+git clone git://github.com/chrismullins/MEPReader.git
+```
+or simply download and extract the tarball from this page.
+
+### Run
+To run the application, start a terminal, then execute:
+```bash
+python bin/MEPReaderApp.py --help
+usage: MEPReaderApp.py [-h] [--version] [-v] [--plot] [--plotDerivative]
+                       [--pairedPulse] -i FILENAME [-o OUTPUT_FILE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  -v, --verbose         increases log verbosity for each occurence.
+  --plot                Plot the signal. Requires matplotlib. (Helps to debug
+                        missed triggers)
+  --plotDerivative      Plot the derivative under the EMG signal. (Helps to
+                        debug missed triggers)
+  --pairedPulse         These are paired pulse data.
+  -i FILENAME, --inputFile FILENAME
+  -o OUTPUT_FILE        redirect output to a file
+  ```
+  
+### Usage
+The application takes one required argument (the `.smr` input file) and can be used to plot the results, write the results to a file in the comma-separated value format (CSV) or both.  For example, the command:
+```bash
+python bin/MEPReaderApp.py -i C:/Data/ppTMS_Visit_1/004_CSP000.smr --plot
+```
+will open a plot looking something like this:
