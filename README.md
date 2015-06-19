@@ -6,9 +6,15 @@ A python utility for interpreting EMG data
 #### Windows
 * A Terminal: you can use `cmd.exe` but I recommend [Git for Windows](https://msysgit.github.io/)
 * [Python 2.7.x](https://www.python.org)
+  * Install python into the default option `C:\Python27` if you can.  Then, edit your PATH environment variable to include `C:\Python27` (instructions [here](https://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/sysdm_advancd_environmnt_addchange_variable.mspx?mfr=true)).
+* [Pip](https://pypi.python.org/pypi/pip) for python package management
+  * Pip is included in the standard python installation on windows.  Simply add the `C:\Python27\Scripts` directory to your `PATH` variable (separate directories using a semicolon), and pip should be accessible from the command line.
 
 #### Mac OS X
 * [Python 2.7.x](https://www.python.org)
+* [Pip](https://pypi.python.org/pypi/pip) for python package management
+  * First, try this: open a terminal and run the command `sudo easy_install pip`.  If this doesn't work,
+  * Download [get-pip.py](https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py) and run the command `sudo python /path/to/get-pip.py` in your terminal.
 
 =
 
@@ -35,3 +41,5 @@ pip install C:\Users\chris\Downloads\numpy‑1.9.2+mkl‑cp27‑none‑win_amd64
 * [matplotlib](http://matplotlib.org/) for plotting
   * [Gohlke's matplotlib packages](http://www.lfd.uci.edu/~gohlke/pythonlibs/#matplotlib)
   * Alternatively, the most recent wheels are available on the [matplotlib download page](http://matplotlib.org/downloads.html) (once again the previous link already has 1.4.3 which is sufficient)
+* [neo](https://pythonhosted.org/neo/) for reading electrophysiology data in Python
+  * Run the command `pip install neo` in your terminal
