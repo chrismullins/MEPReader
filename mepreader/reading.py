@@ -113,7 +113,7 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
             i += 1
 
     # Gather post-trigger windows, print peak-to-peak, mean
-    trigger_window_timepoints = np.array([0.02, 0.05]) # seconds
+    trigger_window_timepoints = np.array([0.02, 0.10]) # seconds
     if pairedPulse:
         trigger_window_timepoints[1] = 0.065
     #index offset from trigger
@@ -143,6 +143,7 @@ def ReadAnalogData(inputFile=None,verbose=VERBOSE, plotSignal=False,
     trigger_maxs = np.array([ecg_signal[trigger_index_minmax_dict[trigger][1]] for trigger in trigger_indices])
     trigger_means = (trigger_mins + trigger_maxs) / 2
     trigger_p2p = abs(trigger_mins) + abs(trigger_maxs)
+    print("Final Peak-To-Peak Average: {}".format(np.mean(trigger_p2p)))
     if outputPath:
         np.savetxt(outputPath, \
             np.hstack(arr.reshape(-1,1) for arr in \
